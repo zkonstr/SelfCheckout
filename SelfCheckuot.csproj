@@ -38,8 +38,8 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Cart\Cart.cs" />
-        <Compile Include="Cart\Product.cs" />
+        <Compile Include="Shop\Cart.cs" />
+        <Compile Include="Shop\Product.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
