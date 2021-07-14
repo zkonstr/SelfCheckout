@@ -1,6 +1,4 @@
-﻿using System.Management.Instrumentation;
-
-namespace SelfCheckuot.Cart
+﻿namespace SelfCheckuot.Shop
 {
     public class Product
     {
