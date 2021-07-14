@@ -5,19 +5,24 @@ namespace SelfCheckuot.Shop
 {
     public class Cart
     {
-        private decimal _sum=0;
+        private decimal _sum = 0;
+
+        public decimal Sum
+        {
+            get => _sum;
+        }
+
         private List<Product> _products;
 
         public List<Product> Products
         {
             get => _products.ToList();
-            private set => _products = Products;
         }
 
         public Cart()
         {
-            Products = new List<Product>();
-        }   
+            _products = new List<Product>();
+        }
 
         public void Add(Product product)
         {
