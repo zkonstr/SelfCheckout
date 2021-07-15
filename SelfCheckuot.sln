@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfCheckuot", "SelfCheckuot.csproj", "{FD40B392-86E4-4560-A84A-5F9870E16F00}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartOperationsTest", "CartOperationsTest\CartOperationsTest.csproj", "{663167BF-9E25-4FCF-B39C-342BBFB3D6CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{FD40B392-86E4-4560-A84A-5F9870E16F00}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD40B392-86E4-4560-A84A-5F9870E16F00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD40B392-86E4-4560-A84A-5F9870E16F00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{663167BF-9E25-4FCF-B39C-342BBFB3D6CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{663167BF-9E25-4FCF-B39C-342BBFB3D6CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{663167BF-9E25-4FCF-B39C-342BBFB3D6CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{663167BF-9E25-4FCF-B39C-342BBFB3D6CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
