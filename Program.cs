@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using SelfCheckuot.Shop;
 
 namespace SelfCheckuot
@@ -53,20 +55,10 @@ namespace SelfCheckuot
             Console.Out.WriteLine("Delete successfully");
         }
 
-        public static void FillStore()
-        {
-            store[1000] = new Product(1000, "Bag", new decimal(0.12));
-            store[1001] = new Product(1001, "Cheese", new decimal(3.42));
-            store[1002] = new Product(1002, "Bread", new decimal(0.89));
-            store[1003] = new Product(1003, "Milk", new decimal(2.43));
-            store[1004] = new Product(1004, "Sugar", new decimal(1.5));
-            store[1005] = new Product(1005, "Meat", new decimal(7.56));
-        }
-
         public static void CLI()
         {
             Console.Out.WriteLine("Add any products to UR cart ");
-            Console.Out.WriteLine("Bag is included to sum (it's cost 0.12) ");
+            Console.Out.WriteLine("Enter 'help' to see all Ids ");
             string cmd;
             while ((cmd = Console.ReadLine()) != "")
             {
@@ -85,12 +77,32 @@ namespace SelfCheckuot
             }
 
             Console.WriteLine("Proceed to checkout " + "Sum = {0}", cart.Sum);
+            PrintCheck();
+        }
+
+        
+
+        private const string OutputFolder = @".\checks\";
+        private const string OutputExtension = ".txt";
+        public static void PrintCheck()
+        {
+            var fileName = DateTime.Now.ToString().Replace(':', '-');
+            using (StreamWriter writer = new StreamWriter(OutputFolder + fileName + OutputExtension))
+            {
+                foreach (var product in cart.Products)
+                {
+                    writer.WriteLine(product.Name+" - "+product.Cost);
+                }
+                writer.WriteLine("Sum = {0}", cart.Sum);
+            }
         }
 
         public static void Main(string[] args)
         {
-            FillStore();
+            
+            store=StoreXmlSerializer.Load();
             CLI();
+            
         }
     }
 }
