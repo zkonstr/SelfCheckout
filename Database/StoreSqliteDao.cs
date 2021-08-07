@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Collections.Generic;
 using System.Data.SQLite;
 using SelfCheckuot.Shop;
 
@@ -9,7 +7,7 @@ namespace SelfCheckuot.Database
     public class StoreSqliteDao : IStoreDao
     {
         private SQLiteConnection _connection;
-        private string _tableName;
+        private readonly string _tableName;
 
         public StoreSqliteDao(string tableName)
         {
@@ -20,23 +18,17 @@ namespace SelfCheckuot.Database
         {
             var connString = $"Data Source={url};Version=3;";
             _connection = new SQLiteConnection(connString);
-            using (_connection)
-            {
-                _connection.Open();
-            }
-
+            _connection.Open();
             var cmd = _connection.CreateCommand();
-            cmd.CommandText = $"CREATE TABLE {_tableName} IF NOT EXISTS";
+            cmd.CommandText =
+                $"CREATE TABLE IF NOT EXISTS {_tableName}(ID INTEGER PRIMARY KEY AUTOINCREMENT, NAME TEXT, COST REAL)";
+            cmd.ExecuteScalar();
             return true;
         }
 
         public bool Disconnect()
         {
-            using (_connection)
-            {
-                _connection.Close();
-            }
-
+            _connection.Close();
             return true;
         }
 
@@ -53,7 +45,7 @@ namespace SelfCheckuot.Database
             var cmd = _connection.CreateCommand();
             cmd.CommandText = $"SELECT * FROM {_tableName} WHERE ID = {id};";
             var reader = cmd.ExecuteReader();
-            Product product = new Product();
+            var product = new Product();
             while (reader.Read())
             {
                 product.Id = (int) reader["ID"];
@@ -69,21 +61,21 @@ namespace SelfCheckuot.Database
             var cmd = _connection.CreateCommand();
             cmd.CommandText = $"SELECT * FROM {_tableName};";
             var reader = cmd.ExecuteReader();
-            List<Product> products = new List<Product>();
+            var products = new List<Product>();
             while (reader.Read())
             {
                 var product = new Product();
-                product.Id = (int) reader["ID"];
+                product.Id = (int) (long) reader["ID"];
                 product.Name = (string) reader["NAME"];
-                product.Cost = (decimal) reader["COST"];
+                product.Cost = (decimal) (double) reader["COST"];
                 products.Add(product);
             }
+
             return products.ToArray();
         }
 
         public bool UpdateProduct(Product product)
         {
-            
             var cmd = _connection.CreateCommand();
             cmd.CommandText =
                 $"UPDATE {_tableName} SET NAME = {product.Name}, COST = {product.Cost} WHERE ID= {product.Id};";

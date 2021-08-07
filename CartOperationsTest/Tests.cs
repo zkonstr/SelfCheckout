@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using SelfCheckuot.Shop;
 
 namespace CartOperationsTest
@@ -12,7 +11,7 @@ namespace CartOperationsTest
         {
             var cart = new Cart();
             cart.Add(new Product(1000, "testProduct", new decimal(1.2)));
-            Assert.AreEqual(1.2,cart.Sum);
+            Assert.AreEqual(1.2, cart.Sum);
         }
 
         [Test]
@@ -21,7 +20,7 @@ namespace CartOperationsTest
             var cart = new Cart();
             cart.Add(new Product(1000, "testProduct1", new decimal(1.2)));
             cart.Add(new Product(1000, "testProduct2", new decimal(2.5)));
-            Assert.AreEqual(3.7,cart.Sum);
+            Assert.AreEqual(3.7, cart.Sum);
         }
 
         [Test]
@@ -31,9 +30,9 @@ namespace CartOperationsTest
             cart.Add(new Product(1000, "testProduct1", new decimal(1.2)));
             cart.Add(new Product(1000, "testProduct2", new decimal(2.5)));
             cart.Delete(1);
-            Assert.AreEqual(1.2,cart.Sum);
+            Assert.AreEqual(1.2, cart.Sum);
         }
-        
+
         [Test]
         public void TestDeleteMany()
         {
@@ -42,9 +41,9 @@ namespace CartOperationsTest
             cart.Add(new Product(1000, "testProduct2", new decimal(2.5)));
             cart.Delete(0);
             cart.Delete(1);
-            Assert.AreEqual(0,cart.Sum);
+            Assert.AreEqual(0, cart.Sum);
         }
-        
+
         [Test]
         public void TestDeleteEmpty()
         {
@@ -59,9 +58,8 @@ namespace CartOperationsTest
                 Assert.Pass();
             }
         }
-        
+
         [Test]
-        
         public void TestDeleteNegative()
         {
             var cart = new Cart();
@@ -77,6 +75,5 @@ namespace CartOperationsTest
                 Assert.Pass();
             }
         }
-        
     }
 }

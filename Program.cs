@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using SelfCheckuot.Database;
 using SelfCheckuot.Shop;
 
 namespace SelfCheckuot
 {
     internal class Program
     {
+        private const string OutputFolder = @".\checks\";
+        private const string OutputExtension = ".txt";
         private static Dictionary<int, Product> _store = new Dictionary<int, Product>();
-        private static Cart _cart = new Cart();
+        private static readonly Cart _cart = new Cart();
 
         private static void Help()
         {
-            foreach (var item in _store)
-            {
-                Console.Out.WriteLine("Id of " + item.Value.Name + " is " + item.Value.Id);
-            }
+            foreach (var item in _store) Console.Out.WriteLine("Id of " + item.Value.Name + " is " + item.Value.Id);
         }
 
         private static void AddProduct(string strIndex)
@@ -24,9 +24,10 @@ namespace SelfCheckuot
             try
             {
                 id = int.Parse(strIndex);
-                _cart.Add(_store[id]);
+                var product = _store[id];
+                _cart.Add(product);
             }
-            catch (Exception e)
+            catch (KeyNotFoundException e)
             {
                 Console.WriteLine("incorrect id, please try again");
                 Console.WriteLine("error: " + e);
@@ -40,10 +41,10 @@ namespace SelfCheckuot
         private static void DeleteProduct()
         {
             Console.Out.WriteLine("Delete products by entering its position");
-            string index = Console.ReadLine();
+            var index = Console.ReadLine();
             try
             {
-                int position = int.Parse(index ?? string.Empty);
+                var position = int.Parse(index ?? string.Empty);
                 _cart.Delete(position - 1);
             }
             catch (Exception e)
@@ -62,7 +63,6 @@ namespace SelfCheckuot
             Console.Out.WriteLine("Enter 'help' to see all Ids ");
             string cmd;
             while ((cmd = Console.ReadLine()) != "")
-            {
                 switch (cmd)
                 {
                     case "help":
@@ -75,36 +75,38 @@ namespace SelfCheckuot
                         AddProduct(cmd);
                         break;
                 }
-            }
 
             Console.WriteLine("Proceed to checkout " + "Sum = {0}", _cart.Sum);
             PrintCheck();
         }
 
-        
-
-        private const string OutputFolder = @".\checks\";
-        private const string OutputExtension = ".txt";
-
         private static void PrintCheck()
         {
             var fileName = DateTime.Now.ToString().Replace(':', '-');
-            using (StreamWriter writer = new StreamWriter(OutputFolder + fileName + OutputExtension))
+            using (var writer = new StreamWriter(OutputFolder + fileName + OutputExtension))
             {
-                foreach (var product in _cart.Products)
-                {
-                    writer.WriteLine(product.Name+" - "+product.Cost);
-                }
+                foreach (var product in _cart.Products) writer.WriteLine(product.Name + " - " + product.Cost);
+
                 writer.WriteLine("Sum = {0}", _cart.Sum);
             }
         }
 
         public static void Main(string[] args)
         {
-            
-            _store=StoreXmlSerializer.Load();
+            var connection = new StoreSqliteDao("store");
+            connection.Connect("store.sqlite");
+            _store = GetProductsFromDb(connection);
             Cli();
-            
+            connection.Disconnect();
+        }
+
+        private static Dictionary<int, Product> GetProductsFromDb(StoreSqliteDao connection)
+        {
+            var productsArray = connection.ReadAllProducts();
+            var products = new Dictionary<int, Product>();
+            foreach (var product in productsArray) products[product.Id] = product;
+
+            return products;
         }
     }
 }

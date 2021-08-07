@@ -5,11 +5,6 @@ namespace SelfCheckuot.Shop
     [Serializable]
     public class Product
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal Cost { get; set; }
-
-
         public Product(int id, string name, decimal cost)
         {
             Id = id;
@@ -20,5 +15,9 @@ namespace SelfCheckuot.Shop
         public Product()
         {
         }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Cost { get; set; }
     }
 }
