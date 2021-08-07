@@ -91,10 +91,13 @@ namespace SelfCheckuot
             }
         }
 
+        private const string EnvDbTableName = "DB_TABLE_NAME";
+        private const string EnvDbLocation = "DB_LOCATION";
+
         public static void Main(string[] args)
         {
-            var connection = new StoreSqliteDao("store");
-            connection.Connect("store.sqlite");
+            var connection = new StoreSqliteDao(Environment.GetEnvironmentVariable(EnvDbTableName));
+            connection.Connect(Environment.GetEnvironmentVariable(EnvDbLocation));
             _store = GetProductsFromDb(connection);
             Cli();
             connection.Disconnect();
